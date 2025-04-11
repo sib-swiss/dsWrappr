@@ -1,2 +1,2 @@
-# ds-splitr
-Split a R package into a "client" and "server" version , datashield ready. 
+# ds-package-creator
+Automatic creation of client/server set of datashield packages. 
