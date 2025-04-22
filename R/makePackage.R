@@ -6,7 +6,7 @@ makePackage <- function(packageName, sourceList = list(), symbols = list(), clie
   unlink(paste0(tempdir(), '/', packageName), recursive = TRUE)
   myDir <- tempdir()
   funcList <- sapply(names(sourceList), function(packName){
-   sapply(c('assign', 'aggregate'), function(funType){
+   sapply(names(sourceList[[packName]]), function(funType){
      sapply(sourceList[[packName]][[funType]], function(funName){
        makeOneFunction(packageName, funName, funType, 'DS', symbols[[funName]])
      })
