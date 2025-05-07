@@ -1,4 +1,4 @@
-makeOneFunction <- function(package, funcName, funcType = c('aggregate','assign'), serverSuffix = 'DS', symbols = NULL, assignVar = NULL ){
+makeOneFunction <- function(package, funcName, funcType = c('aggregate','assign'), serverSuffix , symbols = NULL, assignVar = NULL ){
 func <- list()
 ### client
   if (length(funcType) > 1){

@@ -5,16 +5,28 @@ makePackage <- function(packageName, assignList = list(), aggregateList = list()
   # restart every time:
   unlink(paste0(tempdir(), '/', packageName), recursive = TRUE)
   myDir <- tempdir()
-  assignFuncList <- sapply(names(assignList), function(packName){
+  assignFuncList <- lapply(names(assignList), function(packName){
      sapply(assignList[[packName]], function(funName){
-       makeOneFunction(packName, funName, 'assign', 'DS', symbols[[funName]])
-     })
+      ret <- makeOneFunction(packName, funName, 'assign', 'DS', symbols[[funName]])
+      ret$client <- paste0(clientPrefix, funName,' <- ', ret$client)
+      ret$server <- paste0( funName, serverSuffix, ' <- ', ret$server)
+      return(ret)
+     }, simplify = FALSE)
    })
-  aggregateFuncList <- sapply(names(aggregateList), function(packName){
+  aggregateFuncList <- lapply(names(aggregateList), function(packName){
     sapply(aggregateList[[packName]], function(funName){
-      makeOneFunction(packName, funName, 'assign', 'DS', symbols[[funName]])
+      ret <-makeOneFunction(packName, funName, 'aggregate', 'DS', symbols[[funName]])
+      ret$client <- paste0(clientPrefix, funName,' <- ', ret$client)
+      ret$server <- paste0( funName, serverSuffix, ' <- ', ret$server)
+      return(ret)
     })
-  })
-  c(assignFuncList, aggregateFuncList)
-
+  }, simplify = FALSE)
+  c(unlist(assignFuncList, recursive = FALSE), unlist(aggregateFuncList, recursive = FALSE),
+    sapply(c('.encode.arg', '.decode.arg' ), function(fname){
+      fsource <- capture.output(print(get(fname, envir = as.environment('package:dsWrapR'))))
+      fsource[1] <- paste0(fname, ' <- ',fsource[1])
+    # without the lines starting with "<" (meta package rubbish)
+     # cat(fsource[grep('^<', fsource, invert = TRUE)], file = paste0(myDir,'/', packageName,'/R/',fname,'.R'), sep ="\n")
+      paste(fsource[grep('^<', fsource, invert = TRUE)], collapse = "\n")
+    }, simplify = FALSE))
 }
