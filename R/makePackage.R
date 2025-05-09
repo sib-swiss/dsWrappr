@@ -7,7 +7,8 @@ makePackage <- function(packageName, assignList = list(), aggregateList = list()
   myDir <- tempdir()
   assignFuncList <- lapply(names(assignList), function(packName){
      sapply(assignList[[packName]], function(funName){
-      ret <- makeOneFunction(packName, funName, 'assign', 'DS', symbols[[funName]])
+      syms <- c(symbols[[funName]], unlist(symbols[names(symbols)=='']))
+      ret <- makeOneFunction(packName, funName, 'assign', 'DS', syms)
       ret$client <- paste0(clientPrefix, funName,' <- ', ret$client)
       ret$server <- paste0( funName, serverSuffix, ' <- ', ret$server)
       return(ret)
@@ -15,7 +16,8 @@ makePackage <- function(packageName, assignList = list(), aggregateList = list()
    })
   aggregateFuncList <- lapply(names(aggregateList), function(packName){
     sapply(aggregateList[[packName]], function(funName){
-      ret <-makeOneFunction(packName, funName, 'aggregate', 'DS', symbols[[funName]])
+      syms <- c(symbols[[funName]], unlist(symbols[names(symbols)=='']))
+      ret <-makeOneFunction(packName, funName, 'aggregate', 'DS', syms)
       ret$client <- paste0(clientPrefix, funName,' <- ', ret$client)
       ret$server <- paste0( funName, serverSuffix, ' <- ', ret$server)
       return(ret)
