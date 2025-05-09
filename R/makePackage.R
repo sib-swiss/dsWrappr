@@ -20,6 +20,7 @@ makePackage <- function(packageName, assignList = list(), aggregateList = list()
       serverFile <- paste0(serverDir,'/',serverFun, '.R')
       cat(paste0(clientFun,' <- ', ret$client), file = clientFile)
       cat(paste0( serverFun, ' <- ', ret$server), file = serverFile)
+      return(serverFun)
      })
    })
   aggregateFuncList <- lapply(names(aggregateList), function(packName){
@@ -32,6 +33,7 @@ makePackage <- function(packageName, assignList = list(), aggregateList = list()
       serverFile <- paste0(serverDir,'/',serverFun, '.R')
       cat(paste0(clientFun,' <- ', ret$client), file = clientFile)
       cat(paste0( serverFun, ' <- ', ret$server), file = serverFile)
+      return(serverFun)
     })
   })
 
@@ -43,4 +45,25 @@ makePackage <- function(packageName, assignList = list(), aggregateList = list()
       #paste(fsource[grep('^<', fsource, invert = TRUE)], collapse = "\n")
     }, c('.encode.arg', '.decode.arg'), c(clientDir, serverDir))
 
+  # DESCRIPTION
+  servDesc <- readLines(system.file('server', 'DESCRIPTION', package='dsWrapR'))
+  servDesc[1] <- paste0(servDesc[1],' ', packageName)
+  servDesc[5] <- paste0(servDesc[5],' ', Sys.Date())
+  servDesc[6] <- paste0('Authors@R: ', authors)
+  #AggregateMethods
+  servDesc[10] <-paste0(servDesc[10], paste(unlist(aggregateFuncList), collapse = ', '))
+  #AssignMethods
+  servDesc[11] <-paste0(servDesc[11], paste(unlist(assignFuncList), collapse = ', '))
+  if(!is.null(license)){
+    servDesc[8] <- paste0(servDesc[8],' ', license)
+  }
+  clDesc <- readLines(system.file('client', 'DESCRIPTION', package='dsWrapR'))
+  clDesc[1] <- paste0(clDesc[1],' ', clientPackageName)
+  clDesc[5] <- paste0(clDesc[5],' ', Sys.Date())
+  clDesc[6] <- paste0('Authors@R: ', authors)
+  if(!is.null(license)){
+    clDesc[8] <- paste0(clDesc[8],' ', license)
+  }
+  cat(clDesc, file = paste0(clientDir,'/DESCRIPTION'), sep ="\n")
+  cat(servDesc, file = paste0(serverDir,'/DESCRIPTION'), sep ="\n")
 }
