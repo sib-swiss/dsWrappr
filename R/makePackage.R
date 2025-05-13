@@ -14,7 +14,7 @@ makePackage <- function(packageName, assignList = list(), aggregateList = list()
   assignFuncList <- lapply(names(assignList), function(packName){
      sapply(assignList[[packName]], function(funName){
       syms <- unique(c(symbols[[funName]], unlist(symbols[names(symbols)==''])))
-      ret <- makeOneFunction(packName, funName, 'assign', 'DS', syms)
+      ret <- makeOneFunction(packName, funName, 'assign', serverSuffix , syms)
       clientFun <- paste0(clientPrefix, funName)
       serverFun <- paste0(funName, serverSuffix)
       clientFile <- paste0(clientDir,'/',clientFun, '.R')
