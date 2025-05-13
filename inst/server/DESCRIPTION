@@ -7,6 +7,4 @@ Authors@R:
 Description: 
 License: 
 Depends:
-AggregateMethods:
-AssignMethods:
 Encoding: UTF-8

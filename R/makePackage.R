@@ -57,9 +57,9 @@ makePackage <- function(packageName, assignList = list(), aggregateList = list()
   servDesc[5] <- paste0(servDesc[5],' ', Sys.Date())
   servDesc[6] <- paste0('Authors@R: ', authors)
   #AggregateMethods
-  servDesc[10] <-paste0(servDesc[10], paste(unlist(aggregateFuncList), collapse = ', '))
+ # servDesc[10] <-paste0(servDesc[10], paste(unlist(aggregateFuncList), collapse = ', '))
   #AssignMethods
-  servDesc[11] <-paste0(servDesc[11], paste(unlist(assignFuncList), collapse = ', '))
+#  servDesc[11] <-paste0(servDesc[11], paste(unlist(assignFuncList), collapse = ', '))
   if(!is.null(license)){
     servDesc[8] <- paste0(servDesc[8],' ', license)
   }
@@ -70,6 +70,16 @@ makePackage <- function(packageName, assignList = list(), aggregateList = list()
   if(!is.null(license)){
     clDesc[8] <- paste0(clDesc[8],' ', license)
   }
+
   cat(clDesc, file = paste0(destPath, '/', clientPackageName, '/DESCRIPTION'), sep ="\n")
   cat(servDesc, file = paste0(destPath, '/', packageName ,'/DESCRIPTION'), sep ="\n")
+  dir.create(destPath, '/', packageName, '/inst')
+  #AssignMethods
+  cat(paste0("AssignMethods:\n", paste(unlist(assignFuncList), collapse = ",\n ")),
+            file = paste0(destPath, '/', packageName, '/inst/DATASHIELD'))
+  #AggregateMethods
+  cat(paste0("AggregateMethods:\n", paste(unlist(aggregateFuncList), collapse = ",\n "),
+              file = paste0(destPath, '/', packageName, '/inst/DATASHIELD')), append = TRUE)
+  return(destPath)
+
 }
