@@ -73,13 +73,13 @@ makePackage <- function(packageName, assignList = list(), aggregateList = list()
 
   cat(clDesc, file = paste0(destPath, '/', clientPackageName, '/DESCRIPTION'), sep ="\n")
   cat(servDesc, file = paste0(destPath, '/', packageName ,'/DESCRIPTION'), sep ="\n")
-  dir.create(destPath, '/', packageName, '/inst')
+  dir.create(paste0(destPath, '/', packageName, '/inst'))
   #AssignMethods
-  cat(paste0("AssignMethods:\n", paste(unlist(assignFuncList), collapse = ",\n ")),
+  cat(paste0("AssignMethods:\n    ", paste(unlist(assignFuncList), collapse = ",\n", sep = "    ")),
             file = paste0(destPath, '/', packageName, '/inst/DATASHIELD'))
   #AggregateMethods
-  cat(paste0("AggregateMethods:\n", paste(unlist(aggregateFuncList), collapse = ",\n "),
-              file = paste0(destPath, '/', packageName, '/inst/DATASHIELD')), append = TRUE)
+  cat(paste0("\nAggregateMethods:\n    ", paste(unlist(aggregateFuncList), collapse = ",\n", sep = "    ")),
+              file = paste0(destPath, '/', packageName, '/inst/DATASHIELD'), append = TRUE)
   return(destPath)
 
 }
