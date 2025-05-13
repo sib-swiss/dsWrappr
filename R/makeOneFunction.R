@@ -8,9 +8,9 @@ func <- list()
     if(is.null(assignVar)){
       assignVar <- 'newObj'
     }
-    func$client <- paste0("function(", assignVar, ", async = TRUE, datasources = NULL, ...)\n ")
+    func$client <- paste0("function(", assignVar, ", async = TRUE, datasources = NULL, ...){\n ")
   } else if(funcType == 'aggregate'){
-    func$client <- "function(async, datasources, ...)\n "
+    func$client <- "function(async, datasources, ...){\n "
   } else {
     stop('funcType must be one of "aggregate" and "assign"')
   }
@@ -31,13 +31,13 @@ func <- list()
   }
 
   ### server
-  func$server <- "function(...)\n argList <- list(...)\n "
+  func$server <- "function(...){\n argList <- list(...)\n "
   func$server <- paste0(func$server, "argList <- sapply(names(argList), function(x){\n  ")
   if(length(symbols > 0 )){
     printSyms <- paste(symbols, collapse = "', '")
     func$server <- paste0(func$server, "if(x %in% c('", printSyms, "')){\n   return(as.symbol(argList[[x]]))\n  }\n  ")
   }
-  func$server <- paste0(func$server, "return(.decode.arg(argList[[x]]))\n }, simplify = FALSE))\n ")
+  func$server <- paste0(func$server, "return(.decode.arg(argList[[x]]))\n }, simplify = FALSE)\n ")
   #  func$server <- paste0(func$server, "if(x %in% c('", printSyms, "')){\n   return(argList[[x]])\n  } else {\n   return(.decode.arg(argList[[x]]))\n  }\n }, simplify = FALSE)\n ")
   func$server <- paste0(func$server, 'out <- do.call(', package,'::', funcName, ', argList)\n ')
   func$server <- paste0(func$server, 'return(out)\n}')
