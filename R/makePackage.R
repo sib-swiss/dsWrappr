@@ -80,6 +80,11 @@ makePackage <- function(packageName, assignList = list(), aggregateList = list()
   #AggregateMethods
   cat(paste0("\nAggregateMethods:\n    ", paste(unlist(aggregateFuncList), collapse = ",\n", sep = "    ")),
               file = paste0(destPath, '/', packageName, '/inst/DATASHIELD'), append = TRUE)
+
+  #test:
+  withr::with_dir(paste0(destPath, '/', clientPackageName,){
+    use_testthat()
+  })
   return(destPath)
 
 }
