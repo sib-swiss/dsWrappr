@@ -12,7 +12,8 @@ makePackage <- function(packageName, assignList = list(), aggregateList = list()
   dir.create(clientDir)
   assignFuncList <- lapply(names(assignList), function(packName){
      sapply(assignList[[packName]], function(funName){
-      syms <- unique(c(symbols[[funName]], unlist(symbols[names(symbols)==''])))
+      syms <- unique(c(symbols[[funName]], unlist(symbols[names(symbols)=='']), unlist(symbols[is.null(names(symbols))])))
+      print(syms)
       ret <- makeOneFunction(packName, funName, 'assign', serverSuffix , syms)
       clientFun <- paste0(clientPrefix, funName)
       serverFun <- paste0(funName, serverSuffix)
@@ -55,10 +56,7 @@ makePackage <- function(packageName, assignList = list(), aggregateList = list()
   servDesc[1] <- paste0(servDesc[1],' ', packageName)
   servDesc[5] <- paste0(servDesc[5],' ', Sys.Date())
   servDesc[6] <- paste0('Authors@R: ', authors)
-  #AggregateMethods
- # servDesc[10] <-paste0(servDesc[10], paste(unlist(aggregateFuncList), collapse = ', '))
-  #AssignMethods
-#  servDesc[11] <-paste0(servDesc[11], paste(unlist(assignFuncList), collapse = ', '))
+
   if(!is.null(license)){
     servDesc[8] <- paste0(servDesc[8],' ', license)
   }
