@@ -1,7 +1,6 @@
 
 makePackage <- function(packageName, assignList = list(), aggregateList = list(), symbols = list(), clientPrefix = 'ds.', serverSuffix = 'DS',
-                        authors = 'person("Iulian", "Dragan", email = "iulian.dragan@sib.swiss", role = c("aut", "cre"))',
-                        license = NULL, destPath = getwd()){
+                        authors = NULL, license = NULL, destPath = getwd()){
   # restart every time:
 
   clientPackageName <- paste0(packageName, 'Client')
@@ -48,8 +47,8 @@ makePackage <- function(packageName, assignList = list(), aggregateList = list()
 
   # create the packages:
 
-  package.skeleton(name = packageName, path = destPath, code_files = list.files(serverDir, full.names = TRUE))
-  package.skeleton(name = clientPackageName, path = destPath, code_files = list.files(clientDir, full.names = TRUE))
+  package.skeleton(name = packageName, path = destPath, code_files = list.files(serverDir, full.names = TRUE), force = TRUE)
+  package.skeleton(name = clientPackageName, path = destPath, code_files = list.files(clientDir, full.names = TRUE), force = TRUE)
 
   # DESCRIPTION
   servDesc <- readLines(system.file('server', 'DESCRIPTION', package='dsWrapR'))
@@ -82,10 +81,13 @@ makePackage <- function(packageName, assignList = list(), aggregateList = list()
               file = paste0(destPath, '/', packageName, '/inst/DATASHIELD'), append = TRUE)
 
   #test:
-  withr::with_dir(paste0(destPath, '/', clientPackageName,){
-    use_testthat()
+  withr::with_dir(paste0(destPath, '/', clientPackageName),{
+    usethis::use_testthat()
   })
-  file.copy(system.file('setup-init.R', package='dsWrapR'), paste0(destPath, '/', clientPackageName, '/tests/testthat/'))
+  setupCode <- readLines(system.file('client', 'setup-init.R', package='dsWrapR'))
+  setupCode[4] <- sub('<server_package>', packageName, setupCode[4])
+  setupCode[5] <- sub('<server_package>', packageName, setupCode[5])
+  cat(setupCode, file = paste0(destPath, '/', clientPackageName, '/tests/testthat/setup-init.R'), sep ="\n")
   return(destPath)
 
 }

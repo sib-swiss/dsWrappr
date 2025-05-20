@@ -1,8 +1,8 @@
 library(DSLite)
 library(dsBase)
 library(dsBaseClient)
-dslite.server1 <<- newDSLiteServer(config = defaultDSConfiguration(include=c('dsBase', '<server_package>')))
-dslite.server2 <<- newDSLiteServer(config = defaultDSConfiguration(include=c('dsBase', '<server_package>')))
+dslite.server1 <- newDSLiteServer(config = defaultDSConfiguration(include=c('dsBase', '<server_package>')))
+dslite.server2 <- newDSLiteServer(config = defaultDSConfiguration(include=c('dsBase', '<server_package>')))
 
 #library(DSI)
 #library(dsBaseClient)
