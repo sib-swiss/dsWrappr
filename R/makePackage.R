@@ -85,6 +85,7 @@ makePackage <- function(packageName, assignList = list(), aggregateList = list()
   withr::with_dir(paste0(destPath, '/', clientPackageName,){
     use_testthat()
   })
+  file.copy(system.file('setup-init.R', package='dsWrapR'), paste0(destPath, '/', clientPackageName, '/tests/testthat/'))
   return(destPath)
 
 }
