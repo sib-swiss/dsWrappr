@@ -54,16 +54,22 @@ makePackage <- function(packageName, assignList = list(), aggregateList = list()
   # DESCRIPTION
   servDesc <- readLines(system.file('server', 'DESCRIPTION', package='dsWrapR'))
   servDesc[1] <- paste0(servDesc[1],' ', packageName)
+  servDesc[3] <- paste0(servDesc[3],' ', packageName)
   servDesc[5] <- paste0(servDesc[5],' ', Sys.Date())
   servDesc[6] <- paste0('Authors@R: ', authors)
+  servDesc[7] <- paste0(servDesc[7], ' Datashield implementation of selected functions from ',
+                        paste(unique(c(names(assignList), names(aggregateList))), collapse = ', '), '. Server package.')
 
   if(!is.null(license)){
     servDesc[8] <- paste0(servDesc[8],' ', license)
   }
   clDesc <- readLines(system.file('client', 'DESCRIPTION', package='dsWrapR'))
   clDesc[1] <- paste0(clDesc[1],' ', clientPackageName)
+  clDesc[3] <- paste0(clDesc[3],' ', clientPackageName)
   clDesc[5] <- paste0(clDesc[5],' ', Sys.Date())
   clDesc[6] <- paste0('Authors@R: ', authors)
+  clDesc[7] <- paste0(clDesc[7],' Datashield implementation of selected functions from ',
+                        paste(unique(c(names(assignList), names(aggregateList))), collapse = ', '), '. Client package.')
   if(!is.null(license)){
     clDesc[8] <- paste0(clDesc[8],' ', license)
   }

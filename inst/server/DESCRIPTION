@@ -1,10 +1,10 @@
 Package:
 Type: Package
 Title: 
-Version: 
+Version: 0.1 
 Date:
 Authors@R: 
 Description: 
 License: 
-Depends:
+Depends: RCurl, jsonlite
 Encoding: UTF-8
