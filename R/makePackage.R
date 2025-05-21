@@ -59,10 +59,12 @@ makePackage <- function(packageName, assignList = list(), aggregateList = list()
   servDesc[6] <- paste0('Authors@R: ', authors)
   servDesc[7] <- paste0(servDesc[7], ' Datashield implementation of selected functions from ',
                         paste(unique(c(names(assignList), names(aggregateList))), collapse = ', '), '. Server package.')
-
   if(!is.null(license)){
     servDesc[8] <- paste0(servDesc[8],' ', license)
   }
+  servDesc[9] <- paste0("AssignMethods:\n    ", paste(unlist(assignFuncList), collapse = ",\n   "))
+  servDesc[10] <- paste0("AggregateMethods:\n    ", paste(unlist(assignFuncList), collapse = ",\n   "))
+
   clDesc <- readLines(system.file('client', 'DESCRIPTION', package='dsWrapR'))
   clDesc[1] <- paste0(clDesc[1],' ', clientPackageName)
   clDesc[3] <- paste0(clDesc[3],' ', clientPackageName)
@@ -78,11 +80,11 @@ makePackage <- function(packageName, assignList = list(), aggregateList = list()
   cat(servDesc, file = paste0(destPath, '/', packageName ,'/DESCRIPTION'), sep ="\n")
   dir.create(paste0(destPath, '/', packageName, '/inst'))
   #AssignMethods
-  cat(paste0("AssignMethods:\n    ", paste(unlist(assignFuncList), collapse = ",\n", sep = "    ")),
-            file = paste0(destPath, '/', packageName, '/inst/DATASHIELD'))
+ # cat(paste0("AssignMethods:\n    ", paste(unlist(assignFuncList), collapse = ",\n", sep = "    ")),
+  #          file = paste0(destPath, '/', packageName, '/inst/DATASHIELD'))
   #AggregateMethods
-  cat(paste0("\nAggregateMethods:\n    ", paste(unlist(aggregateFuncList), collapse = ",\n", sep = "    ")),
-              file = paste0(destPath, '/', packageName, '/inst/DATASHIELD'), append = TRUE)
+#  cat(paste0("\nAggregateMethods:\n    ", paste(unlist(aggregateFuncList), collapse = ",\n", sep = "    ")),
+ #             file = paste0(destPath, '/', packageName, '/inst/DATASHIELD'), append = TRUE)
 
   #test:
   withr::with_dir(paste0(destPath, '/', clientPackageName),{

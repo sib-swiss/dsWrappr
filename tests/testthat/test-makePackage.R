@@ -21,3 +21,10 @@ test_that("I can build dsMissForest/dsMissForestClient", {
   expect_equal(c(s,cl), c(paste0(dPath, '/dsMissForest_0.1.tar.gz'), paste0(dPath, '/dsMissForestClient_0.1.tar.gz')))
 
 })
+
+test_that("I can run functions from dsMissForest in a dsLite environment", {
+
+  ds.prodNA('iris_na', TRUE, NULL, x ='iris' )
+  expect_false(all(complete.cases(session1$iris_na)))
+})
+
