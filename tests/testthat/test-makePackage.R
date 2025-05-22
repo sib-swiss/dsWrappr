@@ -35,7 +35,7 @@ test_that("I can run functions from dsMissForest in a dsLite environment", {
   data('iris', envir = session1)
   ds.prodNA('iris.na', TRUE, NULL, x ='iris' )
   expect_false(all(complete.cases(session1$iris.na)))
-  ds.missForest('iris_new', TRUE, NULL, xmis = 'session1$iris.na' )
+  ds.missForest('iris_new', TRUE, NULL, xmis = 'iris.na' )
   expect_true(all(complete.cases(session1$iris_new)))
 })
 
