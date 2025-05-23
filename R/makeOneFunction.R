@@ -8,9 +8,9 @@ func <- list()
     if(is.null(assignVar)){
       assignVar <- 'newObj'
     }
-    func$client <- paste0("function(", assignVar, ", async = TRUE, datasources = NULL, ...){\n ")
+    func$client <- paste0("function(", assignVar, ", ..., async = TRUE, datasources = NULL){\n ")
   } else if(funcType == 'aggregate'){
-    func$client <- "function(async, datasources, ...){\n "
+    func$client <- "function(..., async, datasources){\n "
   } else {
     stop('funcType must be one of "aggregate" and "assign"')
   }
