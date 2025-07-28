@@ -33,7 +33,7 @@ test_that("I can run functions from dsMissForest in a dsLite environment", {
   opals <<- datashield.login(logins = logindata)
   session1 <- dslite.server1$getSession(dslite.server1$getSessionIds())
   data('iris', envir = session1)
-  ds.prodNA('iris.na', TRUE, NULL, x ='iris' )
+  ds.prodNA('iris.na', TRUE, NULL, x ='iris_na' )
   expect_false(all(complete.cases(session1$iris.na)))
   ds.missForest('iris_new', TRUE, NULL, xmis = 'session1$iris.na' )
   expect_true(all(complete.cases(session1$iris_new)))
