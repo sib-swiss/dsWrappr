@@ -3,7 +3,7 @@ function(@assignVar, ..., async = TRUE, datasources = NULL){
     datasources <- datashield.connections_find()
   } 
   argList <- list(...)
-  expr <- c(as.symbol(@serverFunction, 
+  expr <- c(as.symbol('@serverFunction'), 
               sapply(argList, .encode.arg, TRUE, simplify = FALSE))
   ret <- datashield.@op(datasources, @assignVar, as.call(expr), async)            
   return(@retVal)          
