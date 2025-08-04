@@ -3,8 +3,8 @@ test_that("I can create and load dsMissForest/dsMissForestClient", {
   unlink(dPath, recursive = TRUE)
   dir.create(dPath)
   makePackage('dsMissForest', assignList = list(missForest = c('missForest', 'prodNA')),
-              aggregateList = list(missForest = c('mixError', 'nrmse')),
-              symbols = list('ximp', 'xmis', 'xtrue', 'x'),
+              aggregateList = list(missForest = c('mixError'), utils = 'data'),
+              symbols = list( missForest = 'xmis', prodNA = 'x', mixError = c('ximp', 'xmis', 'xtrue')),
               authors = 'person("Iulian", "Dragan", email = "iulian.dragan@sib.swiss", role = c("aut", "cre"))',
               license = 'GPLv3', destPath = dPath)
   devtools::load_all(paste0(dPath, '/dsMissForestClient'))
@@ -23,6 +23,7 @@ test_that("I can build dsMissForest/dsMissForestClient", {
 })
 
 test_that("I can run functions from dsMissForest in a dsLite environment", {
+  library(magrittr)
   install.packages(paste0(dPath, '/dsMissForest_0.1.tar.gz'))
 
   dslite.server1 <<- newDSLiteServer(config = defaultDSConfiguration(include=c('dsBase', 'dsMissForest')))
@@ -32,7 +33,10 @@ test_that("I can run functions from dsMissForest in a dsLite environment", {
   logindata <- builder$build()
   opals <<- datashield.login(logins = logindata)
   session1 <- dslite.server1$getSession(dslite.server1$getSessionIds())
-  data('iris', envir = session1)
+
+
+  data('iris', envir = session1) %>% ds.prodNA(newObj = 'iris_na')
+  %>% ds.missForest('iris_new') %>% ds.mixError('iris_na', 'iris')
 
   ds.prodNA('iris.na', x ='iris' )
   expect_false(all(complete.cases(session1$iris.na)))

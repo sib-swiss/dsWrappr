@@ -12,7 +12,10 @@ makePackage <- function(packageName, assignList = list(), aggregateList = list()
   dir.create(clientDir)
   assignFuncList <- lapply(names(assignList), function(packName){
      sapply(assignList[[packName]], function(funName){
-      syms <- unique(c(symbols[[funName]], unlist(symbols[names(symbols)=='']), unlist(symbols[is.null(names(symbols))])))
+      syms <- symbols[[funName]]
+      if(length(syms) == 0){
+        syms <- unique(c(unlist(symbols[names(symbols)=='']), unlist(symbols[is.null(names(symbols))])))
+      }
       #print(syms)
       ret <- makeOneFunction(packName, funName, 'assign', serverSuffix , syms)
       clientFun <- paste0(clientPrefix, funName)
@@ -26,7 +29,10 @@ makePackage <- function(packageName, assignList = list(), aggregateList = list()
    })
   aggregateFuncList <- lapply(names(aggregateList), function(packName){
     sapply(aggregateList[[packName]], function(funName){
-      syms <- unique(c(symbols[[funName]], unlist(symbols[names(symbols)==''])))
+      syms <- symbols[[funName]]
+      if(length(syms) == 0){
+        syms <- unique(c(unlist(symbols[names(symbols)=='']), unlist(symbols[is.null(names(symbols))])))
+      }
       ret <-makeOneFunction(packName, funName, 'aggregate', 'DS', syms)
       clientFun <- paste0(clientPrefix, funName)
       serverFun <- paste0(funName, serverSuffix)
@@ -63,7 +69,7 @@ makePackage <- function(packageName, assignList = list(), aggregateList = list()
     servDesc[8] <- paste0(servDesc[8],' ', license)
   }
   servDesc[9] <- paste0("AssignMethods:\n    ", paste(unlist(assignFuncList), collapse = ",\n   "))
-  servDesc[10] <- paste0("AggregateMethods:\n    ", paste(unlist(assignFuncList), collapse = ",\n   "))
+  servDesc[10] <- paste0("AggregateMethods:\n    ", paste(unlist(aggregateFuncList), collapse = ",\n   "))
 
   clDesc <- readLines(system.file('client', 'DESCRIPTION', package='dsWrapR'))
   clDesc[1] <- paste0(clDesc[1],' ', clientPackageName)

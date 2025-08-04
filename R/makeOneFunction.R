@@ -11,19 +11,30 @@ makeOneFunction <- function(package, funcName, funcType = c('aggregate','assign'
       assignVar <- 'newObj'
     }
   }
+
   dict <- list(assign = c("@assignVar" = assignVar, "@serverFunction" = serverFuncName, "@op" = "assign", "@retVal" = assignVar),
                aggregate = c("@assignVar," = "", "@serverFunction" = serverFuncName, "@op" = "aggregate", "@retVal" = "ret"))
+  if(length(symbols) > 0 ){
+    dict$assign["@firstArg"] <- dict$aggregate["@firstArg"] <- symbols[1]
+  } else {
+    dict$assign["@firstArg.*?, "] <-  dict$aggregate["@firstArg.*?, "] <- ""
+  }
 
   func$client <- stringr::str_replace_all(clientFuncText, dict[[funcType]])
 
 
   ### server
   serverFuncText <- paste(readLines(system.file('server', 'function_template.md', package='dsWrapR')), collapse = "\n")
-  printSyms <- ""
-  if(length(symbols > 0 )){
+  symbolClause <- ""
+  if(length(symbols) > 0 ){
     printSyms <- paste0("'",paste(symbols, collapse = "', '"),"'")
+    symbolClause <- paste0('
+        if(x %in% c(',  printSyms,')){
+      ret <- as.symbol(ret)
+    }')
   }
-  func$server <- stringr::str_replace_all(serverFuncText, c("@symbolList" = printSyms, "@packageName" = package, "@functionName" = funcName))
+
+  func$server <- stringr::str_replace_all(serverFuncText, c("@symbolClause" = symbolClause, "@packageName" = package, "@functionName" = funcName))
 
   return(func)
 }
