@@ -35,13 +35,12 @@ test_that("I can run functions from dsMissForest in a dsLite environment", {
   session1 <- dslite.server1$getSession(dslite.server1$getSessionIds())
 
 
-  data('iris', envir = session1) %>% ds.prodNA(newObj = 'iris_na')
-  %>% ds.missForest('iris_new') %>% ds.mixError('iris_na', 'iris')
+ data('iris', envir = session1) %>% ds.prodNA(newObj = 'iris_na') %>% ds.missForest('iris_new')
 
-  ds.prodNA('iris.na', x ='iris' )
-  expect_false(all(complete.cases(session1$iris.na)))
-  ds.missForest('iris_new', TRUE, NULL, xmis = 'session1$iris.na' )
-  expect_true(all(complete.cases(session1$iris_new)))
+
+  expect_false(all(complete.cases(session1$iris_na)))
+
+  expect_true(all(complete.cases(session1$iris_new$ximp)))
 
 })
 

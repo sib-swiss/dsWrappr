@@ -25,16 +25,14 @@ makeOneFunction <- function(package, funcName, funcType = c('aggregate','assign'
 
   ### server
   serverFuncText <- paste(readLines(system.file('server', 'function_template.md', package='dsWrapR')), collapse = "\n")
+  printSyms <- ""
   symbolClause <- ""
   if(length(symbols) > 0 ){
     printSyms <- paste0("'",paste(symbols, collapse = "', '"),"'")
-    symbolClause <- paste0('
-        if(x %in% c(',  printSyms,')){
-      ret <- as.symbol(ret)
-    }')
+    symbolClause <- "\\1"
   }
 
-  func$server <- stringr::str_replace_all(serverFuncText, c("@symbolClause" = symbolClause, "@packageName" = package, "@functionName" = funcName))
+  func$server <- stringr::str_replace_all(serverFuncText, c("@symbolList" = printSyms, "(?s)@beginSymbolClause(.+?)@endSymbolClause" = symbolClause, "@packageName" = package, "@functionName" = funcName))
 
   return(func)
 }
