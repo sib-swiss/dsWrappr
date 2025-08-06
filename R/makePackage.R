@@ -58,7 +58,7 @@ makePackage <- function(packageName, assignList = list(), aggregateList = list()
   package.skeleton(name = clientPackageName, path = destPath, code_files = list.files(clientDir, full.names = TRUE), force = TRUE)
 
   # DESCRIPTION
-  servDesc <- readLines(system.file('server', 'DESCRIPTION', package='dsWrapR'))
+  servDesc <- readLines(system.file('server', 'DESCRIPTION', package='dsWrappr'))
   servDesc[1] <- paste0(servDesc[1],' ', packageName)
   servDesc[3] <- paste0(servDesc[3],' ', packageName)
   servDesc[5] <- paste0(servDesc[5],' ', Sys.Date())
@@ -96,7 +96,7 @@ makePackage <- function(packageName, assignList = list(), aggregateList = list()
   withr::with_dir(paste0(destPath, '/', clientPackageName),{
     usethis::use_testthat()
   })
-  setupCode <- readLines(system.file('client', 'setup-init.R', package='dsWrapR'))
+  setupCode <- readLines(system.file('client', 'setup-init.R', package='dsWrappr'))
   setupCode[4] <- sub('<server_package_path>', paste0(destPath, '/',packageName), setupCode[4])
   setupCode[5] <- sub('<server_package>', packageName, setupCode[5])
   setupCode[6] <- sub('<server_package>', packageName, setupCode[5])
