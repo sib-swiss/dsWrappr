@@ -12,7 +12,7 @@ Description: Create a DataSHIELD pair of client/server packages starting from a 
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Depends: RCurl, jsonlite, stringr 
+Depends: RCurl, jsonlite, stringr, DSOpal 
 RoxygenNote: 7.1.2
 Suggests: 
     testthat (>= 3.0.0)
