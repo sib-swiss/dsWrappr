@@ -5,7 +5,7 @@ makeOneFunction <- function(package, funcName, funcType = c('aggregate','assign'
     stop('funcType must be one of "aggregate" and "assign"')
   }
   serverFuncName <- paste0(funcName, serverSuffix)
-  clientFuncText <- paste(readLines(system.file('client', 'function_template.md', package='dsWrapR')), collapse = "\n")
+  clientFuncText <- paste(readLines(system.file('client', 'function_template.md', package='dsWrappr')), collapse = "\n")
   if(funcType == 'assign' ){
     if(is.null(assignVar)){
       assignVar <- 'newObj'
@@ -24,7 +24,7 @@ makeOneFunction <- function(package, funcName, funcType = c('aggregate','assign'
 
 
   ### server
-  serverFuncText <- paste(readLines(system.file('server', 'function_template.md', package='dsWrapR')), collapse = "\n")
+  serverFuncText <- paste(readLines(system.file('server', 'function_template.md', package='dsWrappr')), collapse = "\n")
   printSyms <- ""
   symbolClause <- ""
   if(length(symbols) > 0 ){
