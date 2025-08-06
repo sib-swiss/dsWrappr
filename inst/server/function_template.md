@@ -10,7 +10,7 @@
     retval <- .decode.arg(value)
     @beginSymbolClause
     if(name %in% c(@symbolList)){
-      retval <- .deepExtract(retval, startEnv =  myEnv)
+      retval <- .deep.extract(retval, startEnv =  myEnv)
     }
     @endSymbolClause
     return(retval)
