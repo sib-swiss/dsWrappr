@@ -45,7 +45,7 @@ makePackage <- function(packageName, assignList = list(), aggregateList = list()
   })
 
   Map(function(fname,dest){
-      fsource <- capture.output(print(get(fname, envir = as.environment('package:dsWrapR'))))
+      fsource <- capture.output(print(get(fname, envir = as.environment('package:dsWrappr'))))
       fsource[1] <- paste0(fname, ' <- ',fsource[1])
       # without the lines starting with "<" (meta package rubbish)
       cat(fsource[grep('^<', fsource, invert = TRUE)], file = paste0(dest,'/little_helpers.R'), sep ="\n")
@@ -71,7 +71,7 @@ makePackage <- function(packageName, assignList = list(), aggregateList = list()
   servDesc[9] <- paste0("AssignMethods:\n    ", paste(unlist(assignFuncList), collapse = ",\n   "))
   servDesc[10] <- paste0("AggregateMethods:\n    ", paste(unlist(aggregateFuncList), collapse = ",\n   "))
 
-  clDesc <- readLines(system.file('client', 'DESCRIPTION', package='dsWrapR'))
+  clDesc <- readLines(system.file('client', 'DESCRIPTION', package='dsWrappr'))
   clDesc[1] <- paste0(clDesc[1],' ', clientPackageName)
   clDesc[3] <- paste0(clDesc[3],' ', clientPackageName)
   clDesc[5] <- paste0(clDesc[5],' ', Sys.Date())

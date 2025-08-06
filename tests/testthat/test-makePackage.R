@@ -1,5 +1,4 @@
 test_that("I can create and load dsMissForest/dsMissForestClient", {
-  #dPath <-  paste0(tempdir(TRUE), '/test_dsWrapper')
   unlink(dPath, recursive = TRUE)
   dir.create(dPath)
   makePackage('dsMissForest', assignList = list(missForest = c('missForest', 'prodNA')),
