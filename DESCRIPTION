@@ -1,4 +1,4 @@
-Package: dsWrapR
+Package: dsWrappR
 Type: Package
 Title: DataSHIELD package creator
 Version: 0.1.0
@@ -8,7 +8,7 @@ Authors@R:
              role = c("aut", "cre"),
              email = "iulian.dragan@sib.swiss"))
 Maintainer: Iulian Dragan <iulian.dragan@sib.swiss>
-Description: Create a DataSHIELD pair of client/server packages starting from a list of given functions    
+Description: Create a DataSHIELD pair of client/server packages starting from a list of given libraries and functions    
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
