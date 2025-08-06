@@ -1,2 +1,2 @@
 # dsWrappr
-Automatic creation of client/server set of datashield packages. 
+Automatic creation of client/server sets of datashield packages. 
