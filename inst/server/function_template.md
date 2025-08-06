@@ -1,4 +1,4 @@
-function(...){
+@serverFunction <- function(...){
   argList <- list(...)  
   myEnv <- parent.frame()
   argNames <- names(argList)
