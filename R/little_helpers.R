@@ -38,4 +38,11 @@ if(serialize.it){
   return(some.thing)
 }
 
+.deepExtract <- function(what, startEnv = parent.frame()){
+  terms <- strsplit(what, '\\$|\\[|\\]')[[1]]
+  terms <- terms[terms!='']
+  Reduce(function(x,y){
+    get(y, envir = as.environment(x))
+  }, terms, init = startEnv)
+}
 

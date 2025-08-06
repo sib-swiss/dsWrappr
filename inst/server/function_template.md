@@ -8,9 +8,11 @@ function(...){
   
   argList <- Map(function(name, value){
     retval <- .decode.arg(value)
-    @beginSymbolClauseif(name %in% c(@symbolList)){
-      retval <- as.symbol(retval)
-    }@endSymbolClause
+    @beginSymbolClause
+    if(name %in% c(@symbolList)){
+      retval <- .deepExtract(retval, startEnv =  myEnv)
+    }
+    @endSymbolClause
     return(retval)
   }, argNames, argList)  
   
