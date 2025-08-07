@@ -18,8 +18,6 @@
   
   
   val <- do.call(@packageName::@functionName, argList, envir = myEnv)
- 
-  #stop('Please make sure you review the return object and remove any potential disclosures. Once done, please remove this line')
   return(val)
  }
 

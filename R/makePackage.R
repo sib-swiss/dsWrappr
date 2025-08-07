@@ -1,8 +1,10 @@
 
 makePackage <- function(packageName, assignList = list(), aggregateList = list(), symbols = list(), clientPrefix = 'ds.', serverSuffix = 'DS',
-                        authors = NULL, license = NULL, destPath = getwd()){
+                        authors = NULL, license = NULL, destPath = NULL){
+  if (is.null(destPath)){
+    destPath <- getwd()
+  }
   # restart every time:
-
   clientPackageName <- paste0(packageName, 'Client')
   unlink(paste0(tempdir(), '/', packageName), recursive = TRUE)
   unlink(paste0(tempdir(), '/', clientPackageName), recursive = TRUE)
