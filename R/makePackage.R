@@ -58,7 +58,7 @@ makePackage <- function(packageName, assignList = list(), aggregateList = list()
       # without the lines starting with "<" (meta package rubbish)
       cat(fsource[grep('^<', fsource, invert = TRUE)], file = paste0(dest,'/little_helpers.R'), sep ="\n")
       #paste(fsource[grep('^<', fsource, invert = TRUE)], collapse = "\n")
-    }, c('.encode.arg', '.decode.arg', '.deepExtract'), c(clientDir, serverDir, serverDir))
+    }, c('.encode.arg', '.decode.arg', '.deep.extract'), c(clientDir, serverDir, serverDir))
 
   # create the packages:
 
