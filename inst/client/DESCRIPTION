@@ -6,5 +6,5 @@ Date:
 Authors@R: 
 Description:
 License: 
-Depends: RCurl, jsonlite
+Depends: DSOpal, RCurl, jsonlite
 Encoding: UTF-8

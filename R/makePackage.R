@@ -53,17 +53,22 @@ makePackage <- function(packageName, assignList = list(), aggregateList = list()
   })
 
   Map(function(fname,dest){
-      fsource <- capture.output(print(get(fname, envir = as.environment('package:dsWrappr'))))
+      fsource <- capture.output(print(get(fname, envir = asNamespace('dsWrappr'))))
       fsource[1] <- paste0(fname, ' <- ',fsource[1])
       # without the lines starting with "<" (meta package rubbish)
-      cat(fsource[grep('^<', fsource, invert = TRUE)], file = paste0(dest,'/little_helpers.R'), sep ="\n")
+      cat(fsource[grep('^<', fsource, invert = TRUE)], file = paste0(dest,'/little_helpers.R'), sep ="\n", append = TRUE)
       #paste(fsource[grep('^<', fsource, invert = TRUE)], collapse = "\n")
     }, c('.encode.arg', '.decode.arg', '.deep.extract'), c(clientDir, serverDir, serverDir))
 
   # create the packages:
 
   package.skeleton(name = packageName, path = destPath, code_files = list.files(serverDir, full.names = TRUE), force = TRUE)
+  unlink(paste0(destPath, '/', packageName, '/man/*'))
+  unlink(paste0(destPath, '/', packageName, '/Read-and-delete-me'))
   package.skeleton(name = clientPackageName, path = destPath, code_files = list.files(clientDir, full.names = TRUE), force = TRUE)
+  unlink(paste0(destPath, '/', clientPackageName, '/man/*'))
+  unlink(paste0(destPath, '/', clientPackageName, '/Read-and-delete-me'))
+  devtools::document(paste0(destPath, '/', clientPackageName))
 
   # DESCRIPTION
   servDesc <- readLines(system.file('server', 'DESCRIPTION', package='dsWrappr'))

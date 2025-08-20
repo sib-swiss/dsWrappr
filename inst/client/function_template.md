@@ -1,6 +1,7 @@
 #' @title  Remote "@origFuncName"
 #' @description Executes "@origFuncName" from the library "@packageName" on the remote nodes
-#' @param @firstArg, ... original arguments to be sent to @origFuncName on the remote nodes. Please check the original function documentation for details.@beginFirstArg @firstArg should be a character, enclosed in quotes.@endFirstArg
+#' @param @firstArg, first argument to be sent to @origFuncName on the remote nodes. Please check the original function documentation for details.@beginFirstArg @firstArg should be a character, enclosed in quotes.@endFirstArg
+#' @param ...,  remainder of the @origFuncName arguments.
 @beginAssignVar
 #' @param @assignVar, a character, the name of the new object to be created in the remote sessions.
 @endAssignVar
