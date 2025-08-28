@@ -35,14 +35,23 @@ if(serialize.it){
       some.thing <- jsonlite::fromJSON(RCurl::base64Decode(some.thing), simplifyMatrix = simplifyMatrix)
     }
   }
+  # strip environments from formulas:
+  if(!is.null(some.thing) && class(some.thing) == 'formula'){
+    attr(some.thing, '.Environment') <- NULL
+  }
   return(some.thing)
 }
 
 .deep.extract <- function(what, startEnv = parent.frame()){
-  terms <- strsplit(what, '\\$|\\[|\\]')[[1]]
-  terms <- terms[terms!='']
-  Reduce(function(x,y){
-    get(y, envir = as.environment(x))
-  }, terms, init = startEnv)
+  tryCatch({
+    terms <- strsplit(what, '\\$|\\[|\\]')[[1]]
+    terms <- terms[terms!='']
+    Reduce(function(x,y){
+      get(y, envir = as.environment(x))
+    }, terms, init = startEnv)
+  }, error = function(e){
+    return(what)
+  }
+  )
 }
 
