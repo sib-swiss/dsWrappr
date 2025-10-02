@@ -58,7 +58,7 @@ session1 <- dslite.server1$getSession(dslite.server1$getSessionIds())
 
 opals <- datashield.login(logindata)
 
-# load "iris" in the remote session
+# load "iris" in the "remote" session
 # data() works via its side effects and it breaks in conjunction with DSLite.
 # In a normal, remote session ds.data('iris') would work.
 data("iris")
